@@ -5,16 +5,11 @@ ini_set('display_errors', 1);
 session_start();
 require_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/user.php';
 
-// Redirect to login page if the user is not logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../user/login.php');
     exit;
 }
-
-// Get user data
 $user = getUserById($_SESSION['user_id']);
-
-// If user not found, show an error message
 if (!$user) {
     echo "User not found.";
     exit;
@@ -28,7 +23,6 @@ if (!$user) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Profile</title>
     <style>
-        /* Basic styling for the navbar */
         .navbar {
             background-color: #f0f0f0;
             padding: 10px;

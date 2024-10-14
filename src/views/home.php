@@ -32,7 +32,6 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <style>
-        /* Basic styling for the navbar */
         .navbar {
             background-color: #f0f0f0;
             padding: 10px;
@@ -45,8 +44,6 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .navbar a:hover {
             text-decoration: underline;
         }
-
-        /* Styling for the task list */
         .task-list {
             margin-top: 20px;
         }

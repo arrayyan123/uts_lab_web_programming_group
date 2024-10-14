@@ -11,7 +11,6 @@ date_default_timezone_set('Asia/Jakarta');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
 
-    // Check if the email exists in your users' table
     $database = new Database();
     $conn = $database->getConnection();
     $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
@@ -19,38 +18,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
 
     if ($user) {
-        // Generate a unique token
         $token = bin2hex(random_bytes(50));
-        $expires_at = date("Y-m-d H:i:s", strtotime('+1 hour')); // Set expiration time
+        $expires_at = date("Y-m-d H:i:s", strtotime('+1 hour')); 
 
-        // Store the token in the password_resets table
         $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");
         $stmt->execute([$email, $token, $expires_at]);
-
-        // Create a reset link
         $reset_link = "http://localhost:81/uts_lab_web_programming_group/src/views/user/reset_password.php?token=" . $token;
 
         $mail = new PHPMailer(true);
         
         try {
-            // SMTP configuration
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'ryan.art326@gmail.com';
-            $mail->Password   = 'gxjy xuau exme ryzu'; // Replace with your actual password or app password
+            $mail->Password   = 'gxjy xuau exme ryzu'; 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
             $mail->SMTPDebug = 0; 
 
-            // Email content
             $mail->setFrom('ryan.art326@gmail.com', 'ToDo List Reset Password');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Password Reset Request';
             $mail->Body    = "Click this link to reset your password: <a href='$reset_link'>$reset_link</a>";
             $mail->AltBody = "Click this link to reset your password: $reset_link";
-
             // Send email
             $mail->send();
             header("Location: ../src/views/forgot_password.php?message=Check your email for the password reset link.");

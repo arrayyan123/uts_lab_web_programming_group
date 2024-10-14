@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id']) || !isset($_GET['task_id'])) {
 }
 
 $taskId = $_GET['task_id'];
-$task = getTasks($_SESSION['user_id'])[0]; // Assuming the first task is the one to be edited
+$task = getTasks($_SESSION['user_id'])[0]; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
