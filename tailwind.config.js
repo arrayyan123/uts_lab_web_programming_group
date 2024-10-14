@@ -1,9 +1,22 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/views/**/*.php"],
+  mode: 'jit',
+  content: [
+    "./src/views/**/*.php",
+    "./src/views/**/*.html",
+    "./src/views/**/*.js"
+  ],
   theme: {
-    extend: {},
-  },
-  plugins: [],
+    extend: {
+        fontFamily: {
+            sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+        },
+    },
+},
+  plugins: [
+    forms,
+  ],
 }
-

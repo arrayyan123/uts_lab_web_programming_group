@@ -1,4 +1,4 @@
 <?php
-    header('Location:src/views/home.php');
+    header('Location: /uts_lab_web_programming_group/src/views/home.php');
     exit();
 ?>

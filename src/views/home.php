@@ -1,66 +1,95 @@
+<?php
+// home.php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/user.php';
+include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: user/login.php");
+    exit();
+}
+$user = getUserById($_SESSION['user_id']);
+if (!$user) {
+    session_unset();
+    session_destroy();
+    header("Location: /Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/src/views/user/login.php");
+    exit();
+}
+$database = new Database();
+$conn = $database->getConnection();
+
+$stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ?");
+$stmt->execute([$_SESSION['user_id']]);
+$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+    <title>Home</title>
+    <style>
+        /* Basic styling for the navbar */
+        .navbar {
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        .navbar a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
 
-<body class="bg-gray-100">
-    <div class="container mx-auto flex justify-center py-10">
-        <div class="w-full md:w-2/3">
-            <div class="bg-white shadow-lg rounded-lg">
-                <div class="px-6 py-4 border-b">
-                    <h2 class="text-lg font-semibold flex items-center"><i class="fa fa-tasks mr-2"></i> Task Lists</h2>
-                </div>
-                <div class="max-h-96 overflow-y-auto">
-                    <ul class="divide-y">
-                        <li class="px-6 py-4 flex items-center">
-                            <input type="checkbox" class="mr-2">
-                            <div class="flex-grow">
-                                <div class="font-semibold">Rejected title<span class="ml-2 text-red-600">Rejected</span></div>
-                                <div class="text-sm text-gray-500"><i>By Arrayan</i></div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button class="text-green-500"><i class="fa fa-check"></i></button>
-                                <button class="text-red-500"><i class="fa fa-trash"></i></button>
-                            </div>
-                        </li>
-                        <li class="px-6 py-4 flex items-center">
-                            <input type="checkbox" class="mr-2">
-                            <div class="flex-grow">
-                                <div class="font-semibold">New title</div>
-                                <div class="text-sm text-gray-500">By Savero <span class="ml-2 text-blue-500">NEW</span></div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button class="text-green-500"><i class="fa fa-check"></i></button>
-                                <button class="text-red-500"><i class="fa fa-trash"></i></button>
-                            </div>
-                        </li>
-                        <li class="px-6 py-4 flex items-center">
-                            <input type="checkbox" class="mr-2">
-                            <div class="flex-grow">
-                                <div class="font-semibold">Casual title</div>
-                                <div class="text-sm text-gray-500">By Kaname Madoka</div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button class="text-green-500"><i class="fa fa-check"></i></button>
-                                <button class="text-red-500"><i class="fa fa-trash"></i></button>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="px-6 py-4 text-right">
-                    <button class="mr-2 text-gray-500">Cancel</button>
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded">Add Task</button>
-                </div>
-            </div>
-        </div>
+        /* Styling for the task list */
+        .task-list {
+            margin-top: 20px;
+        }
+        .task-item {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .task-status {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="home.php">Home</a>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="edit_profile.php">Edit Profile</a>
+        <a href="user/logout.php">Logout</a>
     </div>
+
+    <!-- Welcome Message -->
+    <h2>Welcome, <?= htmlspecialchars($user['username']) ?></h2>
+    <p>Email: <?= htmlspecialchars($user['email']) ?></p>
+
+    <!-- Task List -->
+    <div class="task-list">
+        <h3>Your Tasks</h3>
+        <?php if (empty($tasks)): ?>
+            <p>You have no tasks yet.</p>
+        <?php else: ?>
+            <?php foreach ($tasks as $task): ?>
+                <div class="task-item">
+                    <p><strong>Title:</strong> <?= htmlspecialchars($task['title']); ?></p>
+                    <p><strong>Description:</strong> <?= htmlspecialchars($task['description']); ?></p>
+                    <p class="task-status">
+                        <strong>Status:</strong> <?= $task['is_completed'] ? 'Completed' : 'Incomplete'; ?>
+                    </p>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+
 </body>
 </html>
