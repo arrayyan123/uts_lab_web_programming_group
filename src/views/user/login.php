@@ -98,40 +98,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 font-size: 2.5rem;
             }
         }
+
+        /* Floating Image Styles */
+        #floating-image {
+            position: absolute;
+            top: 20px; /* Adjust as needed */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px; /* Set the size of the image */
+            opacity: 0.25; /* Set opacity to 25% */
+            transition: opacity 0.1s; /* Change opacity transition duration */
+        }
     </style>
 </head>
 <body>
+    <img id="floating-image" src="../../assets/Ayaya.jpeg" alt="Floating Image" />
+
     <div class="flex justify-center items-center h-screen">
         <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg card">
             <h1 class="text-4xl font-semibold text-center text-gray-800 mb-6">
                 <i class="fa-solid fa-user"></i> Login
             </h1>
             <hr class="mb-6">
-            <?php if (isset($message)) echo "<p class='text-red-600 text-center mb-4'>$message</p>"; ?>
-            <form method="POST" class="space-y-4">
+
+            <?php if (isset($message)) echo "<p>$message</p>"; ?>
+
+            <form method="POST" class="mt-3">
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" id="email" name="email" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" placeholder="Enter Email..." required>
+                    <label for="email" class="block text-base mb-2">Email</label>
+                    <input type="email" id="email" name="email" class="input-field border w-full text-base px-2 py-1 rounded-md shadow-sm focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Email..." required>
                 </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input type="password" id="password" name="password" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" placeholder="Enter Password..." required>
+
+                <div class="mt-3">
+                    <label for="password" class="block text-base mb-2">Password</label>
+                    <input type="password" id="password" name="password" class="input-field border w-full text-base px-2 py-1 rounded-md shadow-sm focus:outline-none focus:ring-0 focus:border-gray-600" placeholder="Enter Password..." required>
                 </div>
+
                 <div class="mt-3 text-right">
-                    <a href="forgot_password.php" class="text-indigo-600 font-semibold hover:underline transition duration-200">Forgot Password?</a>
+                    <a href="forgot_password.php" class="text-indigo-800 font-semibold">Forgot Password?</a>
                 </div>
-                <div>
+
+                <div class="mt-5">
                     <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-500 focus:outline-none transition duration-200">
                         <i class="fa-solid fa-right-to-bracket"></i>&nbsp;&nbsp;Login
                     </button>
                 </div>
             </form>
-            <div class="mt-4 text-center">
-                <p class="text-sm text-gray-600">Don't have an account? 
-                    <a href="register.php" class="text-indigo-600 hover:underline transition duration-200">Register</a>
-                </p>
+
+            <div class="mt-3 text-center">
+                <a href="register.php" class="text-indigo-800 font-semibold">Register</a>
             </div>
         </div>
     </div>
+
+    <script>
+        const floatingImage = document.getElementById('floating-image');
+
+        function showFloatingImage() {
+            floatingImage.style.opacity = 1; // Show the image
+            setTimeout(() => {
+                floatingImage.style.opacity = 0; // Hide the image after 0.1 seconds
+            }, 100); // 0.1 seconds
+        }
+
+        // Show the image initially
+        showFloatingImage();
+
+        // Repeat every 1 minute (60000 ms)
+        setInterval(showFloatingImage, 60000);
+    </script>
 </body>
 </html>
