@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 require '../../../vendor/autoload.php'; // Load PHPMailer
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+include_once '../../../models/db.php';
 
 date_default_timezone_set('Asia/Jakarta');
 

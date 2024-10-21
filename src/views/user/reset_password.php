@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require '../../../vendor/autoload.php';
-require '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+require '../../../models/db.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 

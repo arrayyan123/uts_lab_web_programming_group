@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+include_once(__DIR__ . '/../models/db.php');
 session_start();
 
 function register($username, $email, $password) {

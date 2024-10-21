@@ -2,7 +2,7 @@
 // login.php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/controllers/auth_controller.php';
+include_once '../../../controllers/auth_controller.php';
 
 if (isset($_SESSION['user_id'])) {
     header("Location: home.php");

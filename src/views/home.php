@@ -1,10 +1,11 @@
 <?php
-// home.php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/user.php';
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+// include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/user.php';
+include_once '../../models/user.php';
+// include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/db.php';
+include_once '../../models/db.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: user/login.php");
@@ -14,7 +15,7 @@ $user = getUserById($_SESSION['user_id']);
 if (!$user) {
     session_unset();
     session_destroy();
-    header("Location: /Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/src/views/user/login.php");
+    header("Location: user/login.php");
     exit();
 }
 $database = new Database();
@@ -62,7 +63,7 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="navbar">
         <a href="home.php">Home</a>
         <a href="dashboard.php">Dashboard</a>
-        <a href="edit_profile.php">Edit Profile</a>
+        <a href="user/edit_profile.php">Edit Profile</a>
         <a href="user/logout.php">Logout</a>
     </div>
 
