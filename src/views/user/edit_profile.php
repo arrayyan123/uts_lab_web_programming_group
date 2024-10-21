@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-include_once '/Applications/XAMPP/xamppfiles/htdocs/uts_lab_web_programming_group/models/user.php';
+include_once '../../../models/user.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
