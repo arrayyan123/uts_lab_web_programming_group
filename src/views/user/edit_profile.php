@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Email:</label>
         <input type="email" name="email" value="<?= htmlspecialchars($user['email']) ?>" required><br>
         <label>Password:</label>
-        <input type="password" name="password" required><br>
+        <input type="password" name="password" ><br>
         <input type="submit" value="Update">
     </form>
     <a href="home.php">Back to Home</a>

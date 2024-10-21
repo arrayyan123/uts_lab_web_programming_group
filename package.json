@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "tailwindcss": "^3.4.13"
+    "tailwindcss": "^3.4.14"
   },
   "name": "uts_lab_web_programming_group",
   "version": "1.0.0",

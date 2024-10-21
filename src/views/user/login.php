@@ -25,11 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="../../css/output.css">
     <title>Login</title>
 </head>
 <body>
     <h2>Login</h2>
     <?php if (isset($message)) echo "<p>$message</p>"; ?>
+    <div class="bg-green-500">
     <form method="POST">
         <label>Email:</label>
         <input type="email" name="email" required><br>
@@ -37,7 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="password" required><br>
         <input type="submit" value="Login">
     </form>
+    </div>
+    <div class="flex flex-col">
     <a href="register.php">Register</a>
     <a href="forgot_password.php">Forgot Password?</a>
+    </div>
 </body>
 </html>
