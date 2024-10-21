@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");
         $stmt->execute([$email, $token, $expires_at]);
-        $reset_link = "http://localhost:81/uts_lab_web_programming_group/src/views/user/reset_password.php?token=" . $token;
+        $reset_link = "http://localhost/uts_lab_web_programming_group/src/views/user/reset_password.php?token=" . $token;
 
         $mail = new PHPMailer(true);
         
