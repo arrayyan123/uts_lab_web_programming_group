@@ -1,25 +1,23 @@
 <?php
-// delete_task.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 session_start();
-require_once '../../controllers/task_controller.php';
-
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../user/login.php"); 
-    exit();
-}
+include_once '../../controllers/task_controller.php';
 
 if (!isset($_GET['task_id'])) {
-    header("Location: home.php"); 
+    header("Location: dashboard.php");
     exit();
 }
 
 $taskId = $_GET['task_id'];
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'] ?? null;
 
-deleteTaskAndRearrange($taskId, $userId);
+if ($userId === null) {
+    header("Location: user/login.php");
+    exit();
+}
 
-header("Location: home.php");
-exit();
+if (deleteTaskAndRearrange($taskId, $userId)) {
+    header("Location: dashboard.php?message=Task deleted successfully");
+} else {
+    header("Location: dashboard.php?message=Failed to delete task.");
+}
 ?>
