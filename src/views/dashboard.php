@@ -47,7 +47,7 @@ $groups = getAllGroups();
                     <li class="bg-white shadow-md rounded-md p-4">
                         <div class="flex justify-between items-center mb-2 <?= $allCompleted ? 'bg-green-100' : 'bg-red-100'; ?>">
                             <div class="flex items-center">
-                                <input type="checkbox" id="group-<?= $group['id'] ?>" <?= $allCompleted ? 'checked' : '' ?>>
+                                <input type="checkbox" id="group-<?= $group['id'] ?>" <?= $allCompleted ? 'checked' : '' ?> disabled>
                                 <label for="group-<?= $group['id'] ?>" class="ml-2"><?= htmlspecialchars($group['title']) ?></label>
                             </div>
                             <div class="flex space-x-2">
@@ -75,7 +75,7 @@ $groups = getAllGroups();
                                 <?php foreach ($tasksInGroup as $task): ?>
                                     <li class="flex justify-between items-center <?= $task['is_completed'] ? 'bg-green-100' : 'bg-red-100'; ?> p-2 rounded-md">
                                         <div class="flex items-center">
-                                            <input type="checkbox" name="tasks[]" value="<?= $task['id'] ?>" id="task-<?= $task['id'] ?>" <?= $task['is_completed'] ? 'checked' : '' ?>>
+                                            <input type="checkbox" name="tasks[]" value="<?= $task['id'] ?>" id="task-<?= $task['id'] ?>" <?= $task['is_completed'] ? 'checked' : '' ?> disabled>
                                             <label for="task-<?= $task['id'] ?>" class="ml-2 cursor-pointer"><?= htmlspecialchars($task['title']) ?></label>
                                         </div>
                                         <div class="flex space-x-2">
