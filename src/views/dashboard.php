@@ -37,8 +37,8 @@ $groups = getAllGroups($userId);
             <ul class="space-y-2">
                 <?php foreach ($groups as $group): ?>
                     <?php 
-                    $tasksInGroup = getTasks(null, $group['id']);
-                    $allCompleted = array_reduce($tasksInGroup, function($carry, $task) {
+                        $tasksInGroup = getTasks(null, $group['id']);
+                        $allCompleted = array_reduce($tasksInGroup, function($carry, $task) {
                         return $carry && $task['is_completed'];
                     }, true);
                     ?>
