@@ -59,31 +59,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Create Task</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>Create Task</h2>
-    <form action="" method="post">
-        <label for="group_id">Select Group:</label>
-        <select name="group_id">
-            <option value="">Select a group</option>
-            <?php foreach ($groups as $group): ?>
-                <option value="<?= $group['id'] ?>"><?= htmlspecialchars($group['title']) ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br><br>
-        <label for="group_name">Or Create New Group:</label>
-        <input type="text" name="group_name">
-        <br><br>
-        <label for="task_name">Task Name:</label>
-        <input type="text" name="task_name" required>
-        <br><br>
-        <label for="task_description">Task Description:</label>
-        <textarea name="task_description" required></textarea>
-        <br><br>
-        <label for="deadline">Deadline:</label>
-        <input type="datetime-local" name="deadline" required>
-        <br><br>
-        <button type="submit">Create Task</button>
-    </form>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <div class="max-w-lg mx-auto bg-white p-8 shadow-lg rounded-lg">
+            <h2 class="text-2xl font-bold mb-6 text-center">Create Task</h2>
+            <form action="" method="post">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="group_id">Select Group:</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" name="group_id">
+                        <option value="">Select a group</option>
+                        <?php foreach ($groups as $group): ?>
+                            <option value="<?= $group['id'] ?>"><?= htmlspecialchars($group['title']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="group_name">Or Create New Group:</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" type="text" name="group_name">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="task_name">Task Name:</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" type="text" name="task_name" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="task_description">Task Description:</label>
+                    <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300"  name="task_description" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2" for="deadline">Deadline:</label>
+                    <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" type="datetime-local" name="deadline" required>
+                </div>
+                <button class="bg-indigo-600 text-white font-bold py-2 px-4 rounded hover:bg-indigo-700 transition duration-300" type="submit">Create Task</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
