@@ -3,7 +3,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-include_once '../../controllers/task_controller.php';
+include_once __DIR__ . '/../../controllers/task_controller.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -45,12 +45,12 @@ $groups = getAllGroups();
                     }, true);
                     ?>
                     <li class="bg-white shadow-md rounded-md p-4">
-                        <div class="flex justify-between items-center mb-2 <?= $allCompleted ? 'bg-green-100' : 'bg-red-100'; ?>">
+                        <div class="flex justify-between lg:items-center p-4 mb-2 md:flex-row flex-col <?= $allCompleted ? 'bg-green-100' : 'bg-red-100'; ?>">
                             <div class="flex items-center">
                                 <input type="checkbox" id="group-<?= $group['id'] ?>" <?= $allCompleted ? 'checked' : '' ?> disabled>
-                                <label for="group-<?= $group['id'] ?>" class="ml-2"><?= htmlspecialchars($group['title']) ?></label>
+                                <label for="group-<?= $group['id'] ?>" class="ml-2 font-bold"><?= htmlspecialchars($group['title']) ?></label>
                             </div>
-                            <div class="flex space-x-2">
+                            <div class="flex justify-center space-x-2">
                                 <form action="complete_group.php" method="POST" class="inline">
                                     <input type="hidden" name="group_id" value="<?= $group['id'] ?>">
                                     <button type="submit" name="complete" value="<?= $allCompleted ? '0' : '1' ?>" class="bg-green-500 text-white px-3 py-1 rounded-md">
@@ -73,10 +73,13 @@ $groups = getAllGroups();
                                 </script>
                             <?php else: ?>
                                 <?php foreach ($tasksInGroup as $task): ?>
-                                    <li class="flex justify-between items-center <?= $task['is_completed'] ? 'bg-green-100' : 'bg-red-100'; ?> p-2 rounded-md">
+                                    <li class="flex justify-between  md:flex-row flex-col items-center <?= $task['is_completed'] ? 'bg-green-100' : 'bg-red-100'; ?> p-2 rounded-md">
                                         <div class="flex items-center">
                                             <input type="checkbox" name="tasks[]" value="<?= $task['id'] ?>" id="task-<?= $task['id'] ?>" <?= $task['is_completed'] ? 'checked' : '' ?> disabled>
-                                            <label for="task-<?= $task['id'] ?>" class="ml-2 cursor-pointer"><?= htmlspecialchars($task['title']) ?></label>
+                                            <div class="flex flex-col">
+                                                <label for="task-<?= $task['id'] ?>" class="ml-2 cursor-pointer font-bold"><?= htmlspecialchars($task['title']) ?></label>
+                                                <p class="ml-2"><?= htmlspecialchars($task['description'])?></p>
+                                            </div>
                                         </div>
                                         <div class="flex space-x-2">
                                             <a href="edit_task.php?task_id=<?= $task['id'] ?>" class="bg-yellow-500 text-white px-3 py-1 rounded-md">Edit</a>

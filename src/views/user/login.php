@@ -2,7 +2,7 @@
 // login.php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include_once '../../../controllers/auth_controller.php';
+include_once __DIR__ . '/../../../controllers/auth_controller.php';
 
 if (isset($_SESSION['user_id'])) {
     header("Location: home.php");
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     if (login($email, $password)) {
-        header("Location: home.php");
+        header("Location: ../home.php");
         exit();
     } else {
         $message = "Invalid email or password.";
