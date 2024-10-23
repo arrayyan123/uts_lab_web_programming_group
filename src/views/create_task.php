@@ -1,7 +1,9 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+session_start();
 require '../../models/db.php';
+require __DIR__ . '/../../models/user.php';
 
 date_default_timezone_set('Asia/Jakarta');
 
@@ -20,18 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $task_description = $_POST['task_description'];
     $deadline = $_POST['deadline'];
 
-    $userId = 1; 
+    $userId = $_SESSION['user_id']; 
     $assigned_by = 1; 
 
-    // Create new group if provided
     if (!empty($group_name)) {
-        // Insert new group with user_id
         $stmt = $conn->prepare("INSERT INTO group_tasks (user_id, title) VALUES (?, ?)");
         $stmt->execute([$userId, $group_name]);
         $group_id = $conn->lastInsertId(); // Get the last inserted group ID
     }
 
-    // Insert the task
     $stmt = $conn->prepare("INSERT INTO tasks (user_id, group_task_id, title, description, deadline, assigned_by) 
           VALUES (:user_id, :group_task_id, :title, :description, :deadline, :assigned_by)");
 

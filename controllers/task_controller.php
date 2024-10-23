@@ -132,16 +132,17 @@ function markTaskComplete($taskId) {
     return updateTask($taskId, null, null, null, null, true);
 }
 
-function getAllGroups() {
+function getAllGroups($userId) {
     $db = new Database();
     $conn = $db->getConnection();
-
-    $query = "SELECT * FROM group_tasks";
+    $query = "SELECT * FROM group_tasks WHERE user_id = :user_id";
     $stmt = $conn->prepare($query);
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
+
 
 function createGroup($title) {
     $db = new Database();
