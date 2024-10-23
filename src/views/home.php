@@ -23,6 +23,11 @@ $conn = $database->getConnection();
 $stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ?");
 $stmt->execute([$_SESSION['user_id']]);
 $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$stmt = $conn->prepare("SELECT title FROM group_tasks g JOIN tasks t ON t.group_task_id = g.id");
+$stmt->execute();
+$group = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -62,21 +67,35 @@ $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <p>Email: <?= htmlspecialchars($user['email']) ?></p>
 
     <!-- Task List -->
-    <div class="task-list">
-        <h3>Your Tasks</h3>
-        <?php if (empty($tasks)): ?>
-            <p>You have no tasks yet.</p>
-        <?php else: ?>
-            <?php foreach ($tasks as $task): ?>
-                <div class="task-item">
-                    <p><strong>Title:</strong> <?= htmlspecialchars($task['title']); ?></p>
-                    <p><strong>Description:</strong> <?= htmlspecialchars($task['description']); ?></p>
-                    <p class="task-status">
-                        <strong>Status:</strong> <?= $task['is_completed'] ? 'Completed' : 'Incomplete'; ?>
-                    </p>
+    <div class="container mx-auto flex justify-center py-10">
+        <div class="w-full md:w-2/3">
+            <div class="bg-white shadow-lg rounded-lg">
+                <div class="px-6 py-4 border-b">
+                    <h2 class="text-lg font-semibold flex items-center"><i class="fa fa-tasks mr-2"></i> Task Lists</h2>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+                <?php if (empty($tasks)): ?>
+                    <p>You have no tasks yet.</p>
+                <?php else: ?>
+                    <div class="max-h-96 overflow-y-auto">
+                        <ul class="divide-y">
+                            <h1><?= htmlspecialchars($group['title']) ?></h1>
+                            <?php foreach ($tasks as $task): ?>
+                                <li class="px-6 py-4 flex items-center">
+                                    <div class="flex-grow">
+                                        <div class="font-semibold"><?= htmlspecialchars($task['title']); ?><span class="ml-2 text-<?= $task['is_completed'] == 1 ? 'blue' : 'red'; ?>-600"><?= $task['is_completed'] ? 'Completed' : 'Incomplete'; ?></span></div>
+                                        <div class="text-sm text-gray-500"><i><?= htmlspecialchars($task['description']); ?></i></div>
+                                    </div>
+                                    <div class="flex space-x-2">
+                                        <button class="text-green-500"><i class="fa fa-check"></i></button>
+                                        <button class="text-red-500"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
     </div>
 
 </body>
