@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $userId = $_SESSION['user_id'];
-$groups = getAllGroups();
+$groups = getAllGroups($userId);
 
 ?>
 

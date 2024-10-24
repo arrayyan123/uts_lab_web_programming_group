@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt->execute($params)) {
         echo "Task created successfully.";
-        header("Location: task_list.php");
+        header("Location: dashboard.php");
         exit();
     } else {
         echo "Failed to create the task.";
