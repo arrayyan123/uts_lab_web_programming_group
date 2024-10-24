@@ -2,47 +2,53 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
-require '../../models/db.php';
+require __DIR__ . '/../../models/db.php';
 require __DIR__ . '/../../models/user.php';
 
 date_default_timezone_set('Asia/Jakarta');
 
 $database = new Database();
 $conn = $database->getConnection();
+$userId = $_SESSION['user_id']; 
 
-// Fetch existing groups
-$stmt = $conn->prepare("SELECT * FROM group_tasks");
+$stmt = $conn->prepare("SELECT * FROM group_tasks WHERE user_id = :user_id");
+$stmt->bindParam(':user_id', $userId);
 $stmt->execute();
 $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $group_name = $_POST['group_name'];
+    $group_name = trim($_POST['group_name']);
     $group_id = $_POST['group_id'];
     $task_name = $_POST['task_name'];
     $task_description = $_POST['task_description'];
     $deadline = $_POST['deadline'];
 
-    $userId = $_SESSION['user_id']; 
-    $assigned_by = 1; 
+    $assigned_by = 1;
 
+    if (!empty($group_name) && !empty($group_id)) {
+        echo "Please select either an existing group or create a new one, but not both.";
+        exit();
+    }
+    if (empty($group_name) && empty($group_id)) {
+        echo "Please select a group or create a new one.";
+        exit();
+    }
     if (!empty($group_name)) {
         $stmt = $conn->prepare("INSERT INTO group_tasks (user_id, title) VALUES (?, ?)");
         $stmt->execute([$userId, $group_name]);
-        $group_id = $conn->lastInsertId(); // Get the last inserted group ID
+        $group_id = $conn->lastInsertId(); 
     }
-
     $stmt = $conn->prepare("INSERT INTO tasks (user_id, group_task_id, title, description, deadline, assigned_by) 
           VALUES (:user_id, :group_task_id, :title, :description, :deadline, :assigned_by)");
 
     $params = [
         ':user_id' => $userId,
-        ':group_task_id' => $group_id, // Use group_task_id here
+        ':group_task_id' => $group_id,
         ':title' => $task_name,
         ':description' => $task_description,
         ':deadline' => $deadline,
         ':assigned_by' => $assigned_by
     ];
-
     if ($stmt->execute($params)) {
         echo "Task created successfully.";
         header("Location: dashboard.php");
@@ -78,6 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label class="block text-gray-700 font-semibold mb-2" for="group_name">Or Create New Group:</label>
                     <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" type="text" name="group_name">
                 </div>
+
                 <div class="mb-4">
                     <label class="block text-gray-700 font-semibold mb-2" for="task_name">Task Name:</label>
                     <input class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-300" type="text" name="task_name" required>
@@ -95,4 +102,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectGroup = document.querySelector('select[name="group_id"]');
+        const createGroupInput = document.querySelector('input[name="group_name"]');
+
+        selectGroup.addEventListener('change', function () {
+            if (selectGroup.value !== '') {
+                createGroupInput.value = '';
+                createGroupInput.disabled = true;
+            } else {
+                createGroupInput.disabled = false;
+            }
+        });
+
+        createGroupInput.addEventListener('input', function () {
+            if (createGroupInput.value.trim() !== '') {
+                selectGroup.value = '';
+                selectGroup.disabled = true;
+            } else {
+                selectGroup.disabled = false;
+            }
+        });
+    });
+</script>
 </html>
