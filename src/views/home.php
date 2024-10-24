@@ -5,6 +5,7 @@ ini_set('display_errors', 1);
 session_start();
 include_once '../../models/user.php';
 include_once '../../models/db.php';
+include_once __DIR__ . '/../../controllers/task_controller.php';
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: user/login.php");
@@ -17,28 +18,40 @@ if (!$user) {
     header("Location: user/login.php");
     exit();
 }
-$database = new Database();
-$conn = $database->getConnection();
 
-$stmt = $conn->prepare("SELECT * FROM tasks WHERE user_id = ?");
-$stmt->execute([$_SESSION['user_id']]);
-$tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$groups = getAllGroups([$_SESSION['user_id']]);
 
-$stmt = $conn->prepare("SELECT title FROM group_tasks g JOIN tasks t ON t.group_task_id = g.id");
-$stmt->execute();
-$group = $stmt->fetchAll(PDO::FETCH_ASSOC);
+function generate_light_hex_color() {
+    do {
+        $color = substr(md5(rand()), 0, 6);
+        $r = hexdec(substr($color, 0, 2));
+        $g = hexdec(substr($color, 2, 2));
+        $b = hexdec(substr($color, 4, 2));
+    } while ($r < 0xF || $g < 0xF || $b < 0xF);
 
+    return '#' . $color;
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/output.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Home</title>
+    <style>
+        .grid-overlay {
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+    </style>
 </head>
+
 <body>
     <!--navbar yang baru ehe-->
     <nav class="bg-gray-200 shadow shadow-gray-300 w-100 px-8 md:px-auto">
@@ -63,40 +76,49 @@ $group = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </nav>
     <!-- Welcome Message -->
-    <h2>Welcome, <?= htmlspecialchars($user['username']) ?></h2>
-    <p>Email: <?= htmlspecialchars($user['email']) ?></p>
+     <div class="relative bg-[url('../assets/umn_build.jpg')] bg-cover aspect-video w-full bg-no-repeat flex flex-col justify-center">
+        <div class="absolute inset-0 bg-black/50 grid-overlay z-0"></div>
+        <div class="relative z-10 text-white text-center">
+        <h1 class="text-6xl md:text-8xl font-bold mb-4">Welcome, <?= htmlspecialchars($user['username']) ?><span class="blink">|</span></h1>
+        <p class="text-sm max-w-md mx-auto mb-8">Email: <?= htmlspecialchars($user['email']) ?></p>
+        </div>
+     </div>
 
     <!-- Task List -->
-    <div class="container mx-auto flex justify-center py-10">
-        <div class="w-full md:w-2/3">
-            <div class="bg-white shadow-lg rounded-lg">
-                <div class="px-6 py-4 border-b">
-                    <h2 class="text-lg font-semibold flex items-center"><i class="fa fa-tasks mr-2"></i> Task Lists</h2>
-                </div>
-                <?php if (empty($tasks)): ?>
-                    <p>You have no tasks yet.</p>
-                <?php else: ?>
-                    <div class="max-h-96 overflow-y-auto">
-                        <ul class="divide-y">
-                            <h1><?= htmlspecialchars($group['title']) ?></h1>
-                            <?php foreach ($tasks as $task): ?>
-                                <li class="px-6 py-4 flex items-center">
-                                    <div class="flex-grow">
-                                        <div class="font-semibold"><?= htmlspecialchars($task['title']); ?><span class="ml-2 text-<?= $task['is_completed'] == 1 ? 'blue' : 'red'; ?>-600"><?= $task['is_completed'] ? 'Completed' : 'Incomplete'; ?></span></div>
-                                        <div class="text-sm text-gray-500"><i><?= htmlspecialchars($task['description']); ?></i></div>
-                                    </div>
-                                    <div class="flex space-x-2">
-                                        <button class="text-green-500"><i class="fa fa-check"></i></button>
-                                        <button class="text-red-500"><i class="fa fa-trash"></i></button>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-            </div>
+    <div class="w-full">
+        <div class="px-6 py-4">
+            <h2 class="text-lg font-semibold flex items-center"><i class="fa fa-tasks mr-2"></i> Task Lists</h2>
+            <p class="text-sm">Pengingat ampuh untuk mengatur dan mengorganisir kehidupan Anda. Dengan fitur "Task Lists", Anda dapat dengan mudah melacak semua tugas yang perlu diselesaikan, menghindari lupa, dan memastikan tidak ada tugas penting yang terlewat.</p>
+        </div>
+        <div class="w-100 flex items-center md:items-start flex-col md:flex-row gap-5">
+            <?php foreach ($groups as $group): ?>
+                <ul class="divide-y mx-5 max-h-96 w-96 overflow-y-auto rounded-lg shadow-lg">
+                    <?php
+                        $tasksInGroup = getTasks(null, $group['id']); // Mengambil semua tugas berdasarkan group_task_id
+                        $allCompleted = array_reduce($tasksInGroup, function ($carry, $task) {
+                            return $carry && $task['is_completed'];
+                        }, true);
+                    ?>
+                    <?php $hex_color = generate_light_hex_color(); ?>
+                    <div class="font-semibold rounded-t-xl p-2" style="background-color: <?= htmlspecialchars($hex_color) ?>;"><?= htmlspecialchars($group['title']) ?></div>
+                    <?php foreach ($tasksInGroup as $task): ?>
+                        <li class="px-6 py-4 flex items-center">
+                            <div class="flex-grow">
+                                <div class="font-semibold"><?= htmlspecialchars($task['title']); ?><span class="ml-2 text-<?= $task['is_completed'] == 1 ? 'blue' : 'red'; ?>-600"><?= $task['is_completed'] ? 'Completed' : 'Incomplete'; ?></span></div>
+                                <div class="text-sm text-gray-500"><i><?= htmlspecialchars($task['description']); ?></i></div>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endforeach; ?>
         </div>
     </div>
-
+    <script>
+        const blink = document.querySelector('.blink');
+        setInterval(() => {
+            blink.style.visibility = (blink.style.visibility === 'hidden') ? 'visible' : 'hidden';
+        }, 500);
+    </script>
 </body>
+
 </html>
