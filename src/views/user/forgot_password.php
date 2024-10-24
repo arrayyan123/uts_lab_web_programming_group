@@ -83,6 +83,11 @@
             <h1 class="text-4xl font-semibold text-center text-gray-800 mb-6">
                 <i class="fa-solid fa-lock"></i> Forgot Password
             </h1>
+            <?php if (isset($_GET['message'])): ?>
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+                    <?php echo htmlspecialchars($_GET['message']); ?>
+                </div>
+            <?php endif; ?>
             <hr class="mb-6">
             <form action="send_reset_link.php" method="post" class="space-y-4">
                 <div>

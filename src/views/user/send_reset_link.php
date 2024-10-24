@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $conn->prepare("INSERT INTO password_resets (email, token, expires_at) VALUES (?, ?, ?)");
         $stmt->execute([$email, $token, $expires_at]);
-        $reset_link = "http://localhost/uts_lab_web_programming_group/src/views/user/reset_password.php?token=" . $token;
+        $reset_link = "https://todolist.duniacerita.com/src/views/user/reset_password.php?token=" . $token;
 
         $mail = new PHPMailer(true);
         
@@ -43,12 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Subject = 'Password Reset Request';
             $mail->Body    = "Click this link to reset your password: <a href='$reset_link'>$reset_link</a>";
             $mail->AltBody = "Click this link to reset your password: $reset_link";
-            // Send email
             $mail->send();
-            header("Location: ../src/views/forgot_password.php?message=Check your email for the password reset link.");
+            header("Location: forgot_password.php?message=Check your email for the password reset link.");
             exit();
         } catch (Exception $e) {
-            header("Location: ../src/views/forgot_password.php?message=Email sending failed: {$mail->ErrorInfo}");
+            header("Location: forgot_password.php?message=Email sending failed: {$mail->ErrorInfo}");
             exit();
         }
     } else {

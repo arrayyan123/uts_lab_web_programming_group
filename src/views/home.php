@@ -199,7 +199,7 @@ function generate_light_hex_color() {
                 </div>
                 <div class="flex flex-wrap -m-4">
                     <div class="xl:w-1/4 md:w-1/2 p-4">
-                        <div class="bg-gray-100 p-6 rounded-lg">
+                        <div class="bg-gray-100 h-full p-6 rounded-lg">
                             <img class="h-40 rounded w-full object-cover object-center mb-6" src="../../assets/arrayyan.JPG" alt="content">
                             <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Full Stack</h3>
                             <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Muhammad Arrayyan Aprilyanto</h2>
@@ -207,7 +207,7 @@ function generate_light_hex_color() {
                         </div>
                     </div>
                     <div class="xl:w-1/4 md:w-1/2 p-4">
-                        <div class="bg-gray-100 p-6 rounded-lg">
+                        <div class="bg-gray-100 h-full p-6 rounded-lg">
                             <img class="h-40 rounded w-full object-cover object-center mb-6" src="../../assets/savero.JPG" alt="content">
                             <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Semi-Full Stack</h3>
                             <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Savero Madajaya</h2>
@@ -215,7 +215,7 @@ function generate_light_hex_color() {
                         </div>
                     </div>
                     <div class="xl:w-1/4 md:w-1/2 p-4">
-                        <div class="bg-gray-100 p-6 rounded-lg">
+                        <div class="bg-gray-100 h-full p-6 rounded-lg">
                         <img class="h-40 rounded w-full object-cover object-center mb-6" src="../../assets/aryasatya.JPG" alt="content">
                         <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Front-End Dev</h3>
                         <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Muhammad Aryasatya Triputra</h2>
@@ -223,7 +223,7 @@ function generate_light_hex_color() {
                         </div>
                     </div>
                     <div class="xl:w-1/4 md:w-1/2 p-4">
-                        <div class="bg-gray-100 p-6 rounded-lg">
+                        <div class="bg-gray-100 h-full p-6 rounded-lg">
                             <img class="h-40 rounded w-full object-cover object-top mb-6" src="../../assets/fahry.jpg" alt="content">
                             <h3 class="tracking-widest text-indigo-500 text-xs font-medium title-font">Front-End Dev</h3>
                             <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Fahry Prathama</h2>

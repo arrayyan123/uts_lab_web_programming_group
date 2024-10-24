@@ -135,21 +135,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Success Message -->
             <?php if (!empty($successMessage)) { ?>
-            <p class="success-message"><?php echo $successMessage; ?></p>
+                <p class="success-message"><?php echo $successMessage; ?></p>
+                <div class="flex flex-col justify-center mt-4">
+                    <a href="login.php" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-500 focus:outline-none transition duration-200 text-center">
+                        <i class="fa-solid fa-arrow-left"></i>&nbsp;&nbsp;Back to login
+                    </a>
+                </div>
+            <?php } else { ?>
+                <form action="" method="post" class="space-y-4">
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700">New Password:</label>
+                        <input type="password" name="password" id="password" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" required>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-500 focus:outline-none transition duration-200">
+                            <i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Reset Password
+                        </button>
+                    </div>
+                </form>
             <?php } ?>
-
-            <form action="" method="post" class="space-y-4">
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">New Password:</label>
-                    <input type="password" name="password" id="password" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" required>
-                </div>
-
-                <div>
-                    <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-500 focus:outline-none transition duration-200">
-                        <i class="fa-solid fa-lock"></i>&nbsp;&nbsp;Reset Password
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
 </body>

@@ -19,7 +19,7 @@ if (isset($_GET['task_id'])) {
         exit;
     }
     $stmt = $conn->prepare("SELECT * FROM group_tasks WHERE user_id = ?");
-    $stmt->execute([$task['user_id']]); // Hanya ambil grup yang dimiliki oleh user ini
+    $stmt->execute([$task['user_id']]); 
     $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
     echo "Task ID is missing.";
@@ -32,10 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $task_description = $_POST['task_description'];
     $deadline = $_POST['deadline'];
 
-    // Update query
     $stmt = $conn->prepare("UPDATE tasks SET group_task_id = ?, title = ?, description = ?, deadline = ? WHERE id = ?");
     if ($stmt->execute([$group_id, $task_name, $task_description, $deadline, $task_id])) {
-        header("Location: task_list.php?message=Task updated successfully");
+        header("Location: dashboard.php?message=Task updated successfully");
         exit();
     } else {
         echo "Failed to update the task.";

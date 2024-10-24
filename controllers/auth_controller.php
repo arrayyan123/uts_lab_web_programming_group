@@ -20,6 +20,10 @@ function register($username, $email, $password) {
     return $stmt->execute();
 }
 
+function getUserId() {
+    return isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+}
+
 function login($email, $password) {
     $db = new Database();
     $conn = $db->getConnection();
