@@ -126,7 +126,7 @@ function generate_light_hex_color() {
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg">Search</button>
         </form>
         <!--Card Group Task-->
-        <div class="w-100 flex justify-center items-center md:items-start flex-col md:flex-row gap-5">
+        <div class="w-100 flex justify-center items-center md:items-start flex-wrap gap-5">
             <?php if (!empty($search) && !empty($results)): ?>
                 <?php 
                 $groupedResults = [];
@@ -158,7 +158,7 @@ function generate_light_hex_color() {
             <?php else: ?>
                 <!-- Menampilkan Semua Group Task dan Task -->
                 <?php foreach ($groups as $group): ?>
-                    <ul class="divide-y mx-5 max-h-96 w-96 overflow-y-auto rounded-lg shadow-lg">
+                    <ul class="divide-y mx-5 max-h-96 min-h-[300px] w-96 overflow-y-auto rounded-lg shadow-lg">
                         <?php
                             $tasksInGroup = getTasks(null, $group['id']);
                             if ($filterStatus === 'completed') {

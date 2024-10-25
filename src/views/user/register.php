@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="../../css/output.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-    <div class="flex justify-center items-center h-screen">
+<div class="flex flex-col lg:flex-row md:mx-auto md:my-auto mx-4 my-20 lg:gap-6 gap-3 justify-center items-center md:h-screen h-auto">
         <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg card">
             <h1 class="text-4xl font-semibold text-center text-gray-800 mb-6">
                 <i class="fa-solid fa-user-plus"></i> Register
@@ -109,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="text" id="username" name="username" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" placeholder="Enter Username..." required>
                 </div>
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email (Please use your own Google Account for Verification)</label>
                     <input type="email" id="email" name="email" class="input-field block w-full mt-1 px-4 py-2 border rounded-md shadow-sm text-gray-700" placeholder="Enter Email..." required>
                 </div>
                 <div>
@@ -127,6 +128,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="login.php" class="text-indigo-600 hover:underline transition duration-200">Login</a>
                 </p>
             </div>
+        </div>
+        <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-lg card">
+            <ul class="list-disc">
+                <li>
+                    Harap Gunakan Akun <span class="font-bold">Gmail (Google)</span> karena akan digunakan sebagai reset password apabila
+                    user lupa password.
+                </li>
+                <li>
+                    Buatlah password yang setidaknya mengandung:
+                    <ul class="list-decimal ml-5">
+                        <li>
+                        Huruf besar dan kecil – Kombinasi huruf besar (A-Z) dan kecil (a-z).
+                        </li>
+                        <li>
+                        Angka – Setidaknya satu angka (0-9).
+                        </li>
+                        <li>
+                        Simbol khusus – Karakter seperti @, #, $, dll.
+                        </li>
+                        <li>
+                        Panjang minimal – Biasanya minimal 8 karakter.
+                        </li>
+                        <li>
+                        Tidak mudah ditebak – Hindari kata umum, nama, atau tanggal lahir.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </body>
