@@ -4,11 +4,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once __DIR__ . '/../../../controllers/auth_controller.php';
 
-if (!isset($_SESSION['user_id'])) {
-    session_unset(); 
-    session_destroy(); 
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];

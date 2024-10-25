@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once '../../controllers/task_controller.php';
+include_once __DIR__ . '/../../controllers/task_controller.php';
 
 if (!isset($_GET['task_id'])) {
     header("Location: dashboard.php");
@@ -15,9 +15,11 @@ if ($userId === null) {
     exit();
 }
 
+echo $userId. ' - ' . $taskId;
 if (deleteTaskAndRearrange($taskId, $userId)) {
+    echo $userId. ' 2 ' . $taskId;
     header("Location: dashboard.php?message=Task deleted successfully");
-} else {
-    header("Location: dashboard.php?message=Failed to delete task.");
+} else { 
+    header("Location: dashboard.php?message=Failed_to_delete_task_$taskId");
 }
 ?>

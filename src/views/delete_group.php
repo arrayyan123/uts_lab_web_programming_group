@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['group_id'])) {
     $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Hapus grupnya
     $stmt = $conn->prepare("DELETE FROM group_tasks WHERE id = :group_id");
     $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
     $stmt->execute();

@@ -143,7 +143,6 @@ function getAllGroups($userId) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC); 
 }
 
-
 function createGroup($title) {
     $db = new Database();
     $conn = $db->getConnection();
@@ -155,39 +154,16 @@ function createGroup($title) {
     return $stmt->execute();
 }
 
-function deleteTaskAndRearrange($taskId, $userId) {
+function deleteTaskAndRearrange($taskId, $userId) { 
     $db = new Database();
     $conn = $db->getConnection();
     try {
-        $conn->beginTransaction();
         $deleteStmt = $conn->prepare("DELETE FROM tasks WHERE id = :id AND user_id = :user_id");
         $deleteStmt->bindParam(':id', $taskId, PDO::PARAM_INT);
         $deleteStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-
         if (!$deleteStmt->execute()) {
             throw new Exception("Failed to delete task.");
         }
-
-        $selectStmt = $conn->prepare("SELECT id FROM tasks WHERE user_id = :user_id ORDER BY id ASC");
-        $selectStmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $selectStmt->execute();
-
-        $tasks = $selectStmt->fetchAll(PDO::FETCH_ASSOC);
-        $newId = 1;
-
-        foreach ($tasks as $task) {
-            $updateStmt = $conn->prepare("UPDATE tasks SET id = :new_id WHERE id = :old_id");
-            $updateStmt->bindParam(':new_id', $newId, PDO::PARAM_INT);
-            $updateStmt->bindParam(':old_id', $task['id'], PDO::PARAM_INT);
-
-            if (!$updateStmt->execute()) {
-                throw new Exception("Failed to update task ID.");
-            }
-            $newId++;
-        }
-        $conn->exec("ALTER TABLE tasks AUTO_INCREMENT = $newId");
-        $conn->commit();
-        return true;
     } catch (Exception $e) {
         if ($conn->inTransaction()) {
             $conn->rollBack();
